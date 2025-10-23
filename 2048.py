@@ -2,28 +2,28 @@ import streamlit as st
 import random
 import copy
 
-# --- Doge Configuration and Aesthetics ---
+# --- Minecraft Configuration and Aesthetics ---
 
-# Define the thematic content for each tile value
-DOGE_MEMES = {
-    0: {"text": "", "emoji": "", "color": "#ccc0b4", "text_color": "#776e65"},  # Empty tile
-    2: {"text": "Wow", "emoji": "🐶", "color": "#eee4da", "text_color": "#776e65"},
-    4: {"text": "Such Game", "emoji": "🕹️", "color": "#ede0c8", "text_color": "#776e65"},
-    8: {"text": "Much Speed", "emoji": "💨", "color": "#f2b179", "text_color": "#f9f6f2"},
-    16: {"text": "Very Fun", "emoji": "✨", "color": "#f59563", "text_color": "#f9f6f2"},
-    32: {"text": "So Merge", "emoji": "🤝", "color": "#f67c5f", "text_color": "#f9f6f2"},
-    64: {"text": "To the Moon", "emoji": "🚀", "color": "#f65e3b", "text_color": "#f9f6f2"},
-    128: {"text": "Shiba Power", "emoji": "🔋", "color": "#edcf72", "text_color": "#f9f6f2"},
-    256: {"text": "Max Crypto", "emoji": "💰", "color": "#edcc61", "text_color": "#f9f6f2"},
-    512: {"text": "Very Legend", "emoji": "👑", "color": "#edc850", "text_color": "#f9f6f2"},
-    1024: {"text": "Ultra Doge", "emoji": "💫", "color": "#edc53f", "text_color": "#f9f6f2"},
-    2048: {"text": "DOGE KING", "emoji": "🏆", "color": "#edc22e", "text_color": "#f9f6f2"},
+# Define the thematic content for each tile value using Minecraft blocks
+MINECRAFT_BLOCKS = {
+    0: {"text": "", "emoji": "", "color": "#faf8f5", "text_color": "#776e65"},  # Empty tile (Very Light Gray)
+    2: {"text": "Dirt Block", "emoji": "🥔", "color": "#a0522d", "text_color": "#f9f6f2"}, # Dirt Brown
+    4: {"text": "Oak Planks", "emoji": "🪵", "color": "#cd853f", "text_color": "#f9f6f2"}, # Plank Brown
+    8: {"text": "Cobblestone", "emoji": "🧱", "color": "#808080", "text_color": "#f9f6f2"}, # Gray
+    16: {"text": "Iron Ingot", "emoji": "⛏️", "color": "#a9a9a9", "text_color": "#f9f6f2"}, # Silver
+    32: {"text": "Gold Ingot", "emoji": "✨", "color": "#ffcc00", "text_color": "#f9f6f2"}, # Bright Gold
+    64: {"text": "Diamond", "emoji": "💎", "color": "#00bcd4", "text_color": "#f9f6f2"}, # Diamond Cyan
+    128: {"text": "Emerald", "emoji": "💚", "color": "#4caf50", "text_color": "#f9f6f2"}, # Emerald Green
+    256: {"text": "Obsidian", "emoji": "🟣", "color": "#6a1b9a", "text_color": "#f9f6f2"}, # Deep Purple
+    512: {"text": "Ancient Debris", "emoji": "🔥", "color": "#3e2723", "text_color": "#f9f6f2"}, # Dark Nether Brown
+    1024: {"text": "Netherite", "emoji": "🖤", "color": "#212121", "text_color": "#f9f6f2"}, # Very Dark Gray/Black
+    2048: {"text": "BEDROCK", "emoji": "👑", "color": "#424242", "text_color": "#f9f6f2"}, # Bedrock Gray
 }
 
 HIGH_TILE_COLOR = ("#3c3a32", "#f9f6f2") # For tiles > 2048
 BOARD_SIZE = 4
 
-# --- Core Game Logic (Unchanged from original 2048) ---
+# --- Core Game Logic (Unchanged) ---
 
 def initialize_board():
     """Initializes the 4x4 board with two random starting tiles."""
@@ -146,8 +146,8 @@ def make_move(direction):
 def get_tile_html(value):
     """Generates the HTML/CSS for a single tile based on its value and theme."""
     
-    # Use the DOGE_MEMES configuration
-    tile_info = DOGE_MEMES.get(value, {"text": str(value), "emoji": "❓", "color": HIGH_TILE_COLOR[0], "text_color": HIGH_TILE_COLOR[1]})
+    # Use the MINECRAFT_BLOCKS configuration
+    tile_info = MINECRAFT_BLOCKS.get(value, {"text": str(value), "emoji": "❓", "color": HIGH_TILE_COLOR[0], "text_color": HIGH_TILE_COLOR[1]})
     
     bg_color = tile_info["color"]
     text_color = tile_info["text_color"]
@@ -157,21 +157,21 @@ def get_tile_html(value):
     # Adjust font size based on content length
     font_size_class = "text-sm" if len(meme_text) > 10 else "text-lg" if len(meme_text) > 5 else "text-xl"
     
-    # Special handling for 2048 tile (DOGE KING) to include a placeholder image
+    # Special handling for 2048 tile (BEDROCK) to include a placeholder image
     if value >= 2048:
-        # Using a reliable placeholder image URL for the 'Doge picture'
-        image_url = "https://placehold.co/100x100/3c3a32/f9f6f2/png?text=DOGE+KING"
+        # Using a reliable placeholder image URL for the 'Bedrock' picture
+        image_url = "https://placehold.co/100x100/424242/f9f6f2/png?text=BEDROCK"
         
         content_html = f"""
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-            <img src="{image_url}" alt="Doge King" style="width: 75%; height: 75%; object-fit: cover; border-radius: 4px; border: 2px solid {text_color};">
+            <img src="{image_url}" alt="Bedrock" style="width: 75%; height: 75%; object-fit: cover; border-radius: 4px; border: 2px solid {text_color};">
             <span style="font-size: 14px; font-weight: bold; margin-top: 4px;">{meme_text} {meme_emoji}</span>
         </div>
         """
     elif value == 0:
          content_html = ""
     else:
-        # Standard tile content (Meme Text + Emoji)
+        # Standard tile content (Block Name + Emoji)
         content_html = f"""
         <div style="text-align: center;">
             <div class="{font_size_class}" style="font-weight: 800; line-height: 1.2;">{meme_text}</div>
@@ -185,7 +185,7 @@ def get_tile_html(value):
         background-color: {bg_color};
         color: {text_color};
         font-family: 'Inter', sans-serif;
-        border-radius: 8px;
+        border-radius: 4px; /* Slightly squarer look for Minecraft blocks */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -194,6 +194,7 @@ def get_tile_html(value):
         min-height: 80px;
         animation: tile-appear 0.15s ease-out;
         transition: transform 0.15s ease-out;
+        box-shadow: 2px 2px 0px rgba(0,0,0,0.2); /* Adding a simple block shadow */
     ">
         {content_html}
     </div>
@@ -213,11 +214,11 @@ def draw_board(board):
             display: grid;
             grid-template-columns: repeat({BOARD_SIZE}, 1fr);
             grid-template-rows: repeat({BOARD_SIZE}, 1fr);
-            gap: 10px;
-            background-color: #bbada0;
-            padding: 10px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            gap: 8px; /* Slightly tighter gap for a block feel */
+            background-color: #6d645d; /* Darker, earthy background */
+            padding: 8px;
+            border-radius: 6px; /* Squarer border */
+            box-shadow: 0 4px 0px #3c3a32; /* Block-like deep shadow */
             width: 100%;
             max-width: 500px; /* Limit board size on large screens */
             aspect-ratio: 1 / 1;
@@ -237,10 +238,10 @@ def draw_board(board):
 # --- Streamlit App Entry Point ---
 
 def app():
-    st.set_page_config(page_title="2048 Doge Edition", layout="centered")
+    st.set_page_config(page_title="2048 Minecraft Edition", layout="centered")
     
-    st.title("🚀 2048: Doge Edition")
-    st.markdown("Merge the Doge tiles to reach **DOGE KING**!")
+    st.title("⛏️ 2048: Minecraft Merge")
+    st.markdown("Merge the blocks to reach **BEDROCK**!")
 
     # 1. State Initialization
     if 'board' not in st.session_state:
@@ -256,11 +257,11 @@ def app():
 
     with col_status:
         if status == "lost":
-            st.error("GAME OVER! Such lose. Much sad. Click NEW GAME to retry.", icon="❌")
+            st.error("GAME OVER! You ran out of space. Time to mine new blocks!", icon="❌")
         elif status == "won":
-            st.success("You reached DOGE KING! 🏆 Continue playing for high score!", icon="👑")
+            st.success("You reached BEDROCK! 🧱 Unbreakable!", icon="👑")
         else:
-            st.info("Wow! Keep Playing! So Merge.", icon="💡")
+            st.info("Keep mining and merging!", icon="💡")
 
 
     st.markdown("---")
@@ -269,9 +270,9 @@ def app():
     draw_board(st.session_state.board)
 
     # 4. Controls (Directional Buttons)
-    st.subheader("Controls")
+    st.subheader("Move Blocks")
     
-    # New layout: Group UP/LEFT and DOWN/RIGHT into two parallel rows
+    # Layout: Group UP/LEFT and DOWN/RIGHT into two parallel rows
     
     # Row 1: UP and LEFT
     col_up, col_left = st.columns(2)
@@ -292,7 +293,7 @@ def app():
 
     # New Game button remains full width
     st.markdown("---")
-    st.button("🔄 NEW GAME", on_click=initialize_board, type="primary", use_container_width=True)
+    st.button("🔄 NEW GAME (Start Mining)", on_click=initialize_board, type="primary", use_container_width=True)
 
     st.markdown("---")
     st.caption("Tip: This game is best played on desktop where the directional buttons are easily accessible.")
