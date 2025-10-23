@@ -2,25 +2,25 @@ import streamlit as st
 import random
 import copy
 
-# --- Minecraft Configuration and Aesthetics ---
+# --- Rainbow Configuration and Aesthetics (RAINBOW COLORS) ---
 
-# Define the thematic content for each tile value using Minecraft blocks
-MINECRAFT_BLOCKS = {
-    0: {"text": "", "emoji": "", "color": "#faf8f5", "text_color": "#776e65"},  # Empty tile (Very Light Gray)
-    2: {"text": "Dirt Block", "emoji": "🥔", "color": "#a0522d", "text_color": "#f9f6f2"}, # Dirt Brown
-    4: {"text": "Oak Planks", "emoji": "🪵", "color": "#cd853f", "text_color": "#f9f6f2"}, # Plank Brown
-    8: {"text": "Cobblestone", "emoji": "🧱", "color": "#808080", "text_color": "#f9f6f2"}, # Gray
-    16: {"text": "Iron Ingot", "emoji": "⛏️", "color": "#a9a9a9", "text_color": "#f9f6f2"}, # Silver
-    32: {"text": "Gold Ingot", "emoji": "✨", "color": "#ffcc00", "text_color": "#f9f6f2"}, # Bright Gold
-    64: {"text": "Diamond", "emoji": "💎", "color": "#00bcd4", "text_color": "#f9f6f2"}, # Diamond Cyan
-    128: {"text": "Emerald", "emoji": "💚", "color": "#4caf50", "text_color": "#f9f6f2"}, # Emerald Green
-    256: {"text": "Obsidian", "emoji": "🟣", "color": "#6a1b9a", "text_color": "#f9f6f2"}, # Deep Purple
-    512: {"text": "Ancient Debris", "emoji": "🔥", "color": "#3e2723", "text_color": "#f9f6f2"}, # Dark Nether Brown
-    1024: {"text": "Netherite", "emoji": "🖤", "color": "#212121", "text_color": "#f9f6f2"}, # Very Dark Gray/Black
-    2048: {"text": "BEDROCK", "emoji": "👑", "color": "#424242", "text_color": "#f9f6f2"}, # Bedrock Gray
+# Define the thematic content for each tile value using rainbow colors
+RAINBOW_TILES = {
+    0: {"text": "", "emoji": "", "color": "#fdfdfd", "text_color": "#776e65"},  # Empty tile (Off-White)
+    2: {"text": "Cell", "emoji": "🧬", "color": "#ff6347", "text_color": "#f9f6f2"}, # Tomato Red
+    4: {"text": "Monkey", "emoji": "🐵", "color": "#ff8c00", "text_color": "#f9f6f2"}, # Dark Orange
+    8: {"text": "Prokey", "emoji": "🐒", "color": "#ffd700", "text_color": "#3c3a32"}, # Gold Yellow
+    16: {"text": "Gorilla", "emoji": "🦍", "color": "#3cb371", "text_color": "#f9f6f2"}, # Medium Sea Green
+    32: {"text": "Orangutan", "emoji": "🦧", "color": "#1e90ff", "text_color": "#f9f6f2"}, # Dodger Blue
+    64: {"text": "Brain", "emoji": "🧠", "color": "#4b0082", "text_color": "#f9f6f2"}, # Indigo
+    128: {"text": "Human", "emoji": "😀", "color": "#9400d3", "text_color": "#f9f6f2"}, # Dark Violet
+    256: {"text": "Clown", "emoji": "🤡", "color": "#ff69b4", "text_color": "#f9f6f2"}, # Hot Pink
+    512: {"text": "Poop", "emoji": "💩", "color": "#00ced1", "text_color": "#3c3a32"}, # Dark Turquoise
+    1024: {"text": "Ghost", "emoji": "👻", "color": "#ff00ff", "text_color": "#f9f6f2"}, # Magenta
+    2048: {"text": "Alien", "emoji": "👽", "color": "#ffbf00", "text_color": "#f9f6f2"}, # Vibrant Gold for Rainbow King
 }
 
-HIGH_TILE_COLOR = ("#3c3a32", "#f9f6f2") # For tiles > 2048
+HIGH_TILE_COLOR = ("#3c3a32", "#f9f6f2") # For tiles > 2048 (beyond 2048, still dark)
 BOARD_SIZE = 4
 
 # --- Core Game Logic (Unchanged) ---
@@ -146,46 +146,45 @@ def make_move(direction):
 def get_tile_html(value):
     """Generates the HTML/CSS for a single tile based on its value and theme."""
     
-    # Use the MINECRAFT_BLOCKS configuration
-    tile_info = MINECRAFT_BLOCKS.get(value, {"text": str(value), "emoji": "❓", "color": HIGH_TILE_COLOR[0], "text_color": HIGH_TILE_COLOR[1]})
+    # Use the RAINBOW_TILES configuration
+    tile_info = RAINBOW_TILES.get(value, {"text": str(value), "emoji": "❓", "color": HIGH_TILE_COLOR[0], "text_color": HIGH_TILE_COLOR[1]})
     
     bg_color = tile_info["color"]
     text_color = tile_info["text_color"]
-    meme_text = tile_info["text"]
-    meme_emoji = tile_info["emoji"]
+    tile_text = tile_info["text"]
+    tile_emoji = tile_info["emoji"]
     
     # Adjust font size based on content length
-    font_size_class = "text-sm" if len(meme_text) > 10 else "text-lg" if len(meme_text) > 5 else "text-xl"
+    font_size_class = "text-sm" if len(tile_text) > 10 else "text-lg" if len(tile_text) > 5 else "text-xl"
     
-    # Special handling for 2048 tile (BEDROCK) to include a placeholder image
+    # Special handling for 2048 tile (RAINBOW KING)
     if value >= 2048:
-        # Using a reliable placeholder image URL for the 'Bedrock' picture
-        image_url = "https://placehold.co/100x100/424242/f9f6f2/png?text=BEDROCK"
+        # Placeholder for a multi-colored/rainbow image if possible, otherwise a vibrant color
+        image_url = "https://placehold.co/100x100/ffbf00/f9f6f2/png?text=🌈+KING" # Vibrant gold with rainbow text
         
         content_html = f"""
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-            <img src="{image_url}" alt="Bedrock" style="width: 75%; height: 75%; object-fit: cover; border-radius: 4px; border: 2px solid {text_color};">
-            <span style="font-size: 14px; font-weight: bold; margin-top: 4px;">{meme_text} {meme_emoji}</span>
+            <img src="{image_url}" alt="Rainbow King" style="width: 75%; height: 75%; object-fit: cover; border-radius: 4px; border: 2px solid {text_color};">
+            <span style="font-size: 14px; font-weight: bold; margin-top: 4px;">{tile_text} {tile_emoji}</span>
         </div>
         """
     elif value == 0:
          content_html = ""
     else:
-        # Standard tile content (Block Name + Emoji)
+        # Standard tile content (Text + Emoji)
         content_html = f"""
         <div style="text-align: center;">
-            <div class="{font_size_class}" style="font-weight: 800; line-height: 1.2;">{meme_text}</div>
-            <div style="font-size: 24px; line-height: 1;">{meme_emoji}</div>
+            <div class="{font_size_class}" style="font-weight: 800; line-height: 1.2;">{tile_text}</div>
+            <div style="font-size: 24px; line-height: 1;">{tile_emoji}</div>
         </div>
         """
-
 
     html = f"""
     <div style="
         background-color: {bg_color};
         color: {text_color};
         font-family: 'Inter', sans-serif;
-        border-radius: 4px; /* Slightly squarer look for Minecraft blocks */
+        border-radius: 8px; /* Slightly rounder for a softer rainbow feel */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -194,7 +193,7 @@ def get_tile_html(value):
         min-height: 80px;
         animation: tile-appear 0.15s ease-out;
         transition: transform 0.15s ease-out;
-        box-shadow: 2px 2px 0px rgba(0,0,0,0.2); /* Adding a simple block shadow */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Softer shadow */
     ">
         {content_html}
     </div>
@@ -214,13 +213,13 @@ def draw_board(board):
             display: grid;
             grid-template-columns: repeat({BOARD_SIZE}, 1fr);
             grid-template-rows: repeat({BOARD_SIZE}, 1fr);
-            gap: 8px; /* Slightly tighter gap for a block feel */
-            background-color: #6d645d; /* Darker, earthy background */
-            padding: 8px;
-            border-radius: 6px; /* Squarer border */
-            box-shadow: 0 4px 0px #3c3a32; /* Block-like deep shadow */
+            gap: 10px; /* Slightly wider gap */
+            background-color: #f0e6ef; /* Very light, slightly purplish background for contrast */
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 500px; /* Limit board size on large screens */
+            max-width: 500px;
             aspect-ratio: 1 / 1;
             margin: 0 auto;
         }}
@@ -238,10 +237,10 @@ def draw_board(board):
 # --- Streamlit App Entry Point ---
 
 def app():
-    st.set_page_config(page_title="2048 Minecraft Edition", layout="centered")
+    st.set_page_config(page_title="2048 Rainbow Edition", layout="centered")
     
-    st.title("⛏️ 2048: Minecraft Merge")
-    st.markdown("Merge the blocks to reach **BEDROCK**!")
+    st.title("🌈 2048: Rainbow Merge")
+    st.markdown("Merge the colors to reach **RAINBOW KING**!")
 
     # 1. State Initialization
     if 'board' not in st.session_state:
@@ -257,11 +256,11 @@ def app():
 
     with col_status:
         if status == "lost":
-            st.error("GAME OVER! You ran out of space. Time to mine new blocks!", icon="❌")
+            st.error("GAME OVER! No more moves. Such a colorful end!", icon="❌")
         elif status == "won":
-            st.success("You reached BEDROCK! 🧱 Unbreakable!", icon="👑")
+            st.success("You reached RAINBOW KING! 👑 Dazzling!", icon="🌈")
         else:
-            st.info("Keep mining and merging!", icon="💡")
+            st.info("Keep merging the colors!", icon="💡")
 
 
     st.markdown("---")
@@ -270,7 +269,7 @@ def app():
     draw_board(st.session_state.board)
 
     # 4. Controls (Directional Buttons)
-    st.subheader("Move Blocks")
+    st.subheader("🌈 Move Colors")
     
     # Layout: Group UP/LEFT and DOWN/RIGHT into two parallel rows
     
@@ -293,7 +292,7 @@ def app():
 
     # New Game button remains full width
     st.markdown("---")
-    st.button("🔄 NEW GAME (Start Mining)", on_click=initialize_board, type="primary", use_container_width=True)
+    st.button("🔄 NEW RAINBOW GAME", on_click=initialize_board, type="primary", use_container_width=True)
 
     st.markdown("---")
     st.caption("Tip: This game is best played on desktop where the directional buttons are easily accessible.")
