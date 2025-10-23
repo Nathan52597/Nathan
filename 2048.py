@@ -6,7 +6,7 @@ import copy
 
 # Define the thematic content for each tile value using rainbow colors
 RAINBOW_TILES = {
-    0: {"text": "", "emoji": "", "color": "#fdfdfd", "text_color": "#776e65"},  # Empty tile (Off-White)
+    0: {"text": "", "emoji": "  ", "color": "#fdfdfd", "text_color": "#776e65"},  # Empty tile (Off-White)
     2: {"text": "Cell", "emoji": "🧬", "color": "#ff6347", "text_color": "#f9f6f2"}, # Tomato Red
     4: {"text": "Monkey", "emoji": "🐵", "color": "#ff8c00", "text_color": "#f9f6f2"}, # Dark Orange
     8: {"text": "Prokey", "emoji": "🐒", "color": "#ffd700", "text_color": "#3c3a32"}, # Gold Yellow
@@ -160,11 +160,11 @@ def get_tile_html(value):
     # Special handling for 2048 tile (RAINBOW KING)
     if value >= 2048:
         # Placeholder for a multi-colored/rainbow image if possible, otherwise a vibrant color
-        image_url = "https://placehold.co/100x100/ffbf00/f9f6f2/png?text=🌈+KING" # Vibrant gold with rainbow text
+        image_url = "https://placehold.co/100x100/ffbf00/f9f6f2/png?text=👽+EVO" 
         
         content_html = f"""
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-            <img src="{image_url}" alt="Rainbow King" style="width: 75%; height: 75%; object-fit: cover; border-radius: 4px; border: 2px solid {text_color};">
+            <img src="{image_url}" alt="Alien Evolution" style="width: 75%; height: 75%; object-fit: cover; border-radius: 4px; border: 2px solid {text_color};">
             <span style="font-size: 14px; font-weight: bold; margin-top: 4px;">{tile_text} {tile_emoji}</span>
         </div>
         """
@@ -237,11 +237,37 @@ def draw_board(board):
 # --- Streamlit App Entry Point ---
 
 def app():
-    st.set_page_config(page_title="2048 Rainbow Edition", layout="centered")
+    # Reverting page title to reflect Human Evolution theme
+    st.set_page_config(page_title="2048 Human Evolution", layout="centered")
     
-    st.title("🌈 2048: Rainbow Merge")
-    st.markdown("Merge the colors to reach **RAINBOW KING**!")
+    # Updated Title: Keeping your name and the original theme
+    st.title("Nathan's 🧬 2048: Human Evolution Merge")
+    st.markdown("Merge the life forms to reach the **Alien** stage!")
 
+    # --- Game Rules (English) ---
+    st.markdown("---")
+    st.subheader("How to Play (Simple Rules)")
+    st.markdown("""
+    1.  **Merge:** Use the directional buttons to move all tiles in that direction.
+    2.  **Match:** When two tiles with the same evolutionary stage (e.g., two 'Monkey' tiles) collide, they **merge** into the next stage ('Prokey').
+    3.  **New Tiles:** A new 'Cell' or 'Monkey' tile randomly appears on the board after every move.
+    4.  **Win:** Reach the **Alien** tile (2048 value) to win the game!
+    5.  **Lose:** If the board fills up and no more moves or merges are possible, the game is over.
+    """)
+    
+    # --- Game Rules (Chinese) ---
+    # This section remains unchanged as requested
+    with st.expander("规则 (Chinese Rules)"):
+        st.markdown("""
+        1.  **合并 (Hé bìng):** 使用方向按钮向该方向移动所有方块。
+        2.  **匹配 (Pǐ pèi):** 当两个具有相同进化阶段的方块（例如，两个 'Monkey' 方块）碰撞时，它们会**合并**成下一个阶段（'Prokey'）。
+        3.  **新方块 (Xīn fāngkuài):** 每次移动后，一个新的 'Cell' 或 'Monkey' 方块会随机出现在棋盘上。
+        4.  **获胜 (Huò shèng):** 达到**外星人 (Alien)** 方块（2048 值）即可赢得游戏！
+        5.  **失败 (Shī bài):** 如果棋盘被填满，并且不再有移动或合并的可能性，则游戏结束。
+        """)
+
+    st.markdown("---")
+    
     # 1. State Initialization
     if 'board' not in st.session_state:
         initialize_board()
@@ -256,11 +282,11 @@ def app():
 
     with col_status:
         if status == "lost":
-            st.error("GAME OVER! No more moves. Such a colorful end!", icon="❌")
+            st.error("GAME OVER! No more moves. Evolution stopped!", icon="❌")
         elif status == "won":
-            st.success("You reached RAINBOW KING! 👑 Dazzling!", icon="🌈")
+            st.success("You reached ALIEN! 👽 Evolution complete!", icon="👑")
         else:
-            st.info("Keep merging the colors!", icon="💡")
+            st.info("Keep merging to advance evolution!", icon="💡")
 
 
     st.markdown("---")
@@ -269,7 +295,7 @@ def app():
     draw_board(st.session_state.board)
 
     # 4. Controls (Directional Buttons)
-    st.subheader("🌈 Move Colors")
+    st.subheader("🧬 Move Evolution")
     
     # Layout: Group UP/LEFT and DOWN/RIGHT into two parallel rows
     
@@ -292,7 +318,7 @@ def app():
 
     # New Game button remains full width
     st.markdown("---")
-    st.button("🔄 NEW RAINBOW GAME", on_click=initialize_board, type="primary", use_container_width=True)
+    st.button("🔄 NEW EVOLUTION GAME", on_click=initialize_board, type="primary", use_container_width=True)
 
     st.markdown("---")
     st.caption("Tip: This game is best played on desktop where the directional buttons are easily accessible.")
